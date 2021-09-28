@@ -1,0 +1,221 @@
+#include "ETCCompress.hlsl"
+#include "BCCompress.hlsl"
+#include "ASTCCompress.hlsl"
+
+#pragma kernel CSMainBC3_8
+#pragma kernel CSMainBC3_4 
+#pragma kernel CSMainBC3_2 
+#pragma kernel CSMainBC3_1 
+#pragma kernel CSMainETC2_8 
+#pragma kernel CSMainETC2_4
+#pragma kernel CSMainETC2_2 
+#pragma kernel CSMainETC2_1 
+#pragma kernel CSMainASTC_8
+#pragma kernel CSMainASTC_4
+#pragma kernel CSMainASTC_2
+#pragma kernel CSMainASTC_1
+
+RWTexture2D<uint4> Result;
+Texture2D<float4> RenderTexture0;
+SamplerState samplerRenderTexture0;
+uint4 DestRect;
+
+[numthreads(8, 8, 1)]
+void CSMainBC3_8(uint3 ThreadId : SV_DispatchThreadID)
+{
+    uint2 SamplePos = ThreadId.xy * 4;
+    if (any(SamplePos >= DestRect.zw))
+        return;
+
+    float2 TexelUVSize = 1.f / float2(DestRect.zw);
+    float2 SampleUV = (float2(SamplePos)+0.5f) * TexelUVSize;
+
+    float3 BlockBaseColor[16];
+    float BlockA[16];
+    ReadBlockRGBA(RenderTexture0, samplerRenderTexture0, SampleUV, TexelUVSize, BlockBaseColor, BlockA);
+
+    Result[ThreadId.xy] = CompressBC3Block_SRGB(BlockBaseColor, BlockA);
+}
+
+[numthreads(4, 4, 1)]
+void CSMainBC3_4(uint3 ThreadId : SV_DispatchThreadID)
+{
+    uint2 SamplePos = ThreadId.xy * 4;
+    if (any(SamplePos >= DestRect.zw))
+        return;
+
+    float2 TexelUVSize = 1.f / float2(DestRect.zw);
+    float2 SampleUV = (float2(SamplePos)+0.5f) * TexelUVSize;
+
+    float3 BlockBaseColor[16];
+    float BlockA[16];
+    ReadBlockRGBA(RenderTexture0, samplerRenderTexture0, SampleUV, TexelUVSize, BlockBaseColor, BlockA);
+
+    Result[ThreadId.xy] = CompressBC3Block_SRGB(BlockBaseColor, BlockA);
+}
+
+[numthreads(2, 2, 1)]
+void CSMainBC3_2(uint3 ThreadId : SV_DispatchThreadID)
+{
+    uint2 SamplePos = ThreadId.xy * 4;
+    if (any(SamplePos >= DestRect.zw))
+        return;
+
+    float2 TexelUVSize = 1.f / float2(DestRect.zw);
+    float2 SampleUV = (float2(SamplePos)+0.5f) * TexelUVSize;
+
+    float3 BlockBaseColor[16];
+    float BlockA[16];
+    ReadBlockRGBA(RenderTexture0, samplerRenderTexture0, SampleUV, TexelUVSize, BlockBaseColor, BlockA);
+
+    Result[ThreadId.xy] = CompressBC3Block_SRGB(BlockBaseColor, BlockA);
+}
+
+[numthreads(1, 1, 1)]
+void CSMainBC3_1(uint3 ThreadId : SV_DispatchThreadID)
+{
+    uint2 SamplePos = ThreadId.xy * 4;
+    if (any(SamplePos >= DestRect.zw))
+        return;
+
+    float2 TexelUVSize = 1.f / float2(DestRect.zw);
+    float2 SampleUV = (float2(SamplePos)+0.5f) * TexelUVSize;
+
+    float3 BlockBaseColor[16];
+    float BlockA[16];
+    ReadBlockRGBA(RenderTexture0, samplerRenderTexture0, SampleUV, TexelUVSize, BlockBaseColor, BlockA);
+
+    Result[ThreadId.xy] = CompressBC3Block_SRGB(BlockBaseColor, BlockA);
+}
+
+[numthreads(8, 8, 1)]
+void CSMainETC2_8(uint3 ThreadId : SV_DispatchThreadID)
+{
+    uint2 SamplePos = ThreadId.xy * 4;
+    if (any(SamplePos >= DestRect.zw))
+        return;
+
+    float2 TexelUVSize = 1.f / float2(DestRect.zw);
+    float2 SampleUV = (float2(SamplePos)+0.5f) * TexelUVSize;
+
+    float3 BlockBaseColor[16];
+    float BlockA[16];
+    ReadBlockRGBA(RenderTexture0, samplerRenderTexture0, SampleUV, TexelUVSize, BlockBaseColor, BlockA);
+
+    Result[ThreadId.xy] = CompressBlock_ETC2_RGBA(BlockBaseColor, BlockA);
+}
+
+[numthreads(4, 4, 1)]
+void CSMainETC2_4(uint3 ThreadId : SV_DispatchThreadID)
+{
+    uint2 SamplePos = ThreadId.xy * 4;
+    if (any(SamplePos >= DestRect.zw))
+        return;
+
+    float2 TexelUVSize = 1.f / float2(DestRect.zw);
+    float2 SampleUV = (float2(SamplePos)+0.5f) * TexelUVSize;
+
+    float3 BlockBaseColor[16];
+    float BlockA[16];
+    ReadBlockRGBA(RenderTexture0, samplerRenderTexture0, SampleUV, TexelUVSize, BlockBaseColor, BlockA);
+
+    Result[ThreadId.xy] = CompressBlock_ETC2_RGBA(BlockBaseColor, BlockA);
+}
+
+[numthreads(2, 2, 1)]
+void CSMainETC2_2(uint3 ThreadId : SV_DispatchThreadID)
+{
+    uint2 SamplePos = ThreadId.xy * 4;
+    if (any(SamplePos >= DestRect.zw))
+        return;
+
+    float2 TexelUVSize = 1.f / float2(DestRect.zw);
+    float2 SampleUV = (float2(SamplePos)+0.5f) * TexelUVSize;
+
+    float3 BlockBaseColor[16];
+    float BlockA[16];
+    ReadBlockRGBA(RenderTexture0, samplerRenderTexture0, SampleUV, TexelUVSize, BlockBaseColor, BlockA);
+
+    Result[ThreadId.xy] = CompressBlock_ETC2_RGBA(BlockBaseColor, BlockA);
+}
+
+[numthreads(1, 1, 1)]
+void CSMainETC2_1(uint3 ThreadId : SV_DispatchThreadID)
+{
+    uint2 SamplePos = ThreadId.xy * 4;
+    if (any(SamplePos >= DestRect.zw))
+        return;
+
+    float2 TexelUVSize = 1.f / float2(DestRect.zw);
+    float2 SampleUV = (float2(SamplePos)+0.5f) * TexelUVSize;
+
+    float3 BlockBaseColor[16];
+    float BlockA[16];
+    ReadBlockRGBA(RenderTexture0, samplerRenderTexture0, SampleUV, TexelUVSize, BlockBaseColor, BlockA);
+
+    Result[ThreadId.xy] = CompressBlock_ETC2_RGBA(BlockBaseColor, BlockA);
+}
+
+[numthreads(8, 8, 1)]
+void CSMainASTC_8(uint3 ThreadId : SV_DispatchThreadID) {
+    uint2 SamplePos = ThreadId.xy * 4;
+    if (any(SamplePos >= DestRect.zw))
+        return;
+
+    float2 TexelUVSize = 1.f / float2(DestRect.zw);
+    float2 SampleUV = (float2(SamplePos)+0.5f) * TexelUVSize;
+
+    float3 BlockBaseColor[16];
+    ReadBlockRGB(RenderTexture0, samplerRenderTexture0, SampleUV, TexelUVSize, BlockBaseColor);
+
+    uint4 result = CompressBlock(BlockBaseColor);
+    Result[ThreadId.xy] = result;
+}
+
+[numthreads(4, 4, 1)]
+void CSMainASTC_4(uint3 ThreadId : SV_DispatchThreadID) {
+    uint2 SamplePos = ThreadId.xy * 4;
+    if (any(SamplePos >= DestRect.zw))
+        return;
+
+    float2 TexelUVSize = 1.f / float2(DestRect.zw);
+    float2 SampleUV = (float2(SamplePos)+0.5f) * TexelUVSize;
+
+    float3 BlockBaseColor[16];
+    ReadBlockRGB(RenderTexture0, samplerRenderTexture0, SampleUV, TexelUVSize, BlockBaseColor);
+
+    uint4 result = CompressBlock(BlockBaseColor);
+    Result[ThreadId.xy] = result;
+}
+
+[numthreads(2, 2, 1)]
+void CSMainASTC_2(uint3 ThreadId : SV_DispatchThreadID) {
+    uint2 SamplePos = ThreadId.xy * 4;
+    if (any(SamplePos >= DestRect.zw))
+        return;
+
+    float2 TexelUVSize = 1.f / float2(DestRect.zw);
+    float2 SampleUV = (float2(SamplePos)+0.5f) * TexelUVSize;
+
+    float3 BlockBaseColor[16];
+    ReadBlockRGB(RenderTexture0, samplerRenderTexture0, SampleUV, TexelUVSize, BlockBaseColor);
+
+    uint4 result = CompressBlock(BlockBaseColor);
+    Result[ThreadId.xy] = result;
+}
+
+[numthreads(1, 1, 1)]
+void CSMainASTC_1(uint3 ThreadId : SV_DispatchThreadID) {
+    uint2 SamplePos = ThreadId.xy * 4;
+    if (any(SamplePos >= DestRect.zw))
+        return;
+
+    float2 TexelUVSize = 1.f / float2(DestRect.zw);
+    float2 SampleUV = (float2(SamplePos)+0.5f) * TexelUVSize;
+
+    float3 BlockBaseColor[16];
+    ReadBlockRGB(RenderTexture0, samplerRenderTexture0, SampleUV, TexelUVSize, BlockBaseColor);
+
+    uint4 result = CompressBlock(BlockBaseColor);
+    Result[ThreadId.xy] = result;
+}
